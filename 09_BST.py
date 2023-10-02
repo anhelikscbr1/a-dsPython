@@ -42,13 +42,47 @@ class BST():
             return True
         return False
 
+    def minVal(self, node):
+        while(node.left):
+            node = node.left    
+        return node
+
+    def deleteNode(self, node, value):
+        if(node == None):
+            return None
+        if(node.value > value):
+            node.left = self.deleteNode(node.left, value)
+        elif(node.value < value):
+            node.right = self.deleteNode(node.right, value)
+        else: 
+            if(not node.left):
+                temp = node.right
+                node = None
+                return temp
+
+            if(not node.right):
+                temp = node.left
+                node = None
+                return temp
+            
+            minVal = self.minVal(node.right)
+            node.value = minVal.value
+            node.right = self.deleteNode(node.right, minVal.value)
+        return node
+
+
 myBST = BST()
 
 myBST.insert(100)
 myBST.insert(150, myBST.root)
 myBST.insert(90, myBST.root)
 myBST.insert(80, myBST.root)
+myBST.insert(10, myBST.root)
 
 myBST.inOrderTraversal(myBST.root)
+print(
+'-----------------------'
+)
 
-print(myBST.searchNode(150, myBST.root))
+myBST.deleteNode(myBST.root, 100)
+myBST.inOrderTraversal(myBST.root)
